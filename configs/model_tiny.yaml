@@ -1,0 +1,28 @@
+# =====================================================================
+# MedMiniLLM 模型结构配置 —— 类 DeepSeek-V3 架构的精简版（约 17M 参数）
+# 参考：DeepSeek-V3 技术报告（MLA / DeepSeekMoE / 无辅助损失负载均衡）
+# 规模：可在普通 CPU 上完成演示级训练与推理
+# =====================================================================
+
+vocab_size: 4096           # 词表大小（与自训练 BPE 分词器一致）
+hidden: 384                # 隐藏层维度（V3 为 7168，这里缩到数百）
+n_layers: 8                # Transformer 层数（V3 为 61）
+n_heads: 6                 # 注意力头数
+
+# ---- MLA（多头潜变量注意力，DeepSeek-V2/V3 的核心创新）----
+kv_lora_rank: 64           # KV 潜向量维度 c_KV：推理缓存压缩的关键
+qk_rope_head_dim: 32       # Q/K 中施加 RoPE 的解耦维度（V3 为 64）
+
+# ---- DeepSeekMoE（细粒度专家 + 共享专家）----
+n_routed_experts: 16       # 路由专家数量（V3 为 256，粒度更细）
+routed_top_k: 4            # 每 token 激活的专家数（V3 为 8）
+moe_inter_dim: 128         # 单个专家 FFN 中间维度（SwiGLU）
+n_shared_experts: 1        # 共享专家数量（始终激活，捕获通用知识）
+
+# ---- 归一化与位置编码 ----
+norm_eps: 1.0e-6           # RMSNorm 的 epsilon（DeepSeek 使用 RMSNorm）
+rope_theta: 10000.0        # RoPE 旋转基频
+max_seq_len: 512           # 最大序列长度
+
+# 词嵌入与输出层共享权重（减少参数、便于小模型收敛）
+tie_word_embeddings: true

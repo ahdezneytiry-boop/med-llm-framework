@@ -1,0 +1,8 @@
+# 统一换行符与文本文件处理，避免 Windows/Linux 混用导致的 diff 噪音
+* text=auto
+
+# 二进制文件不做换行转换
+*.png binary
+*.jpg binary
+*.pt binary
+*.npy binary

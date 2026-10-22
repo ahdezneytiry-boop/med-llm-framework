@@ -1,0 +1,19 @@
+# =====================================================================
+# 预训练配置 —— 因果语言建模（自回归预测下一个 token）
+# 数据：合成医学语料（演示数据，无真实患者信息）
+# 运行：python scripts/pretrain.py --config configs/pretrain.yaml
+# =====================================================================
+
+data: data/demo/pretrain_corpus.txt   # 预训练语料（纯文本，按行拼接）
+out_dir: checkpoints/pretrain         # 检查点输出目录
+
+seq_len: 256              # 训练序列长度（按此长度连续切块）
+batch_size: 4             # 批大小
+grad_accum: 2             # 梯度累积步数（等效批 = 4 × 2 = 8）
+lr: 3.0e-4                # 学习率（AdamW）
+weight_decay: 0.01        # 权重衰减
+warmup_steps: 20          # 学习率预热步数
+max_steps: 300            # 最大训练步数（演示规模，可自行加大）
+log_interval: 10          # 日志打印间隔（步）
+save_interval: 100        # 检查点保存间隔（步）
+seed: 42                  # 随机种子（保证可复现）

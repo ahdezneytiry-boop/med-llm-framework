@@ -1,0 +1,22 @@
+# MedMiniLLM 依赖清单（类 DeepSeek 的医学大模型全栈框架，演示级规模）
+# 安装：pip install -r requirements.txt
+# 提示：torch 请按自己的平台选择 CPU / CUDA 版本（https://pytorch.org/get-started/locally/）
+
+# —— 核心：模型与训练 ——
+torch>=2.1
+numpy
+tqdm
+pyyaml
+
+# —— 服务与界面 ——
+fastapi
+uvicorn[standard]
+pydantic>=2
+gradio>=4
+
+# —— 评测与工具 ——
+pytest
+requests
+
+# —— 可选：仅在使用 OpenAI 兼容后端（provider=openai）时才需要 ——
+# openai>=1.0

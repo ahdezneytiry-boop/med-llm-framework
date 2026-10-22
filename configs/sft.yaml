@@ -1,0 +1,21 @@
+# =====================================================================
+# SFT（监督微调）配置 —— 指令跟随
+# 数据：DeepSeek 风格 {"messages": [{"role","content"}, ...]} JSONL
+#       仅 assistant 部分参与损失计算（与开源社区 SFT 惯例一致）
+# 运行：python scripts/sft.py --config configs/sft.yaml
+# =====================================================================
+
+data: data/demo/sft_data.jsonl      # SFT 对话数据（messages 格式）
+pretrained: checkpoints/pretrain/last.pt   # 预训练检查点（初始化权重）
+out_dir: checkpoints/sft             # 微调后检查点输出目录
+
+seq_len: 384              # 序列长度（对话通常更长）
+batch_size: 4             # 批大小
+grad_accum: 2             # 梯度累积步数
+lr: 1.0e-4                # SFT 学习率低于预训练（保持预训练知识）
+weight_decay: 0.01
+warmup_steps: 10
+max_steps: 200            # 最大训练步数
+log_interval: 10
+save_interval: 100
+seed: 42

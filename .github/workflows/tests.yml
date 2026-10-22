@@ -1,0 +1,24 @@
+name: tests
+
+# 推送到 main 或发起 PR 时运行单元测试
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # 只安装测试所需的最小依赖（完整依赖见 requirements.txt）
+      - name: 安装依赖
+        run: pip install torch numpy tqdm pyyaml pytest
+
+      - name: 运行单元测试
+        run: pytest tests/ -v
